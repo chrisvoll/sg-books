@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 import InterfaceActions from '../actions/InterfaceActions';
 
@@ -13,9 +14,9 @@ class Navigation extends React.Component {
 
   render() {
     return <div className="navigation">
-      <div className="navigation__logo">
+      <Link to="/" className="navigation__logo">
         SGBooks
-      </div>
+      </Link>
 
       <div className="navigation__search">
         <input

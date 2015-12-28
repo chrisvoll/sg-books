@@ -1,5 +1,6 @@
 import React from 'react';
 import Immutable from 'immutable';
+import { Link } from 'react-router';
 import InterfaceActions from '../actions/InterfaceActions';
 import bookEnum from '../helpers/bookEnum';
 
@@ -24,7 +25,10 @@ class Book extends React.Component {
   }
 
   getDescription() {
-    return this.getAuthor() + ' – ' + this.getSafeDescription();
+    var author = this.getAuthor();
+    var desc = this.getSafeDescription();
+    var joiner = author && desc ? ' – ' : '';
+    return author + joiner + desc;
   }
 
   getLocation() {
@@ -35,14 +39,21 @@ class Book extends React.Component {
     return bookEnum.locations[key];
   }
 
-  handleClick() {
-    InterfaceActions.setSelected(this.props.atom.getIn(['book', 'id']));
+  getTitleSlug() {
+    return this.props.atom.getIn(['book', 'title'])
+      .toLowerCase()
+      .split(':')[0]
+      .replace(/[^\w ]+/g,'')
+      .replace(/ +/g,'-')
+      .split('-')
+      .slice(0, 8)
+      .join('-');
   }
 
   render() {
     var title = this.props.atom.getIn(['book', 'title']);
 
-    return <div className="book" onClick={this.handleClick.bind(this)}>
+    return <Link to={'/books/' + this.props.atom.getIn(['book', 'id']) + '/' + this.getTitleSlug()} className="book">
       <div className="book__image"/>
       <div className="book__title" title={title}>
         {title}
@@ -55,7 +66,7 @@ class Book extends React.Component {
       <div className="book__location">
         {this.getLocation()}
       </div>
-    </div>;
+    </Link>;
   }
 }
 

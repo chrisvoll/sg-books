@@ -1,6 +1,7 @@
 import Reflux from 'reflux';
 import Immutable from 'immutable';
 import InterfaceActions from '../actions/InterfaceActions';
+import history from '../helpers/history';
 
 var InterfaceStore = Reflux.createStore({
   listenables: InterfaceActions,
@@ -10,9 +11,6 @@ var InterfaceStore = Reflux.createStore({
     filterLocation: null,
     selected: null
   }),
-
-  init() {
-  },
 
   set(key, val) {
     this.data = this.data.set(key, val);
@@ -26,10 +24,11 @@ var InterfaceStore = Reflux.createStore({
 
   onSetFilterSearch(value) {
     this.set('filterSearch', value);
-  },
-
-  onSetSelected(value) {
-    this.set('selected', value);
+    if (value) {
+      history.pushState(null, '/search/' + value);
+    } else {
+      history.pushState(null, '/');
+    }
   }
 });
 

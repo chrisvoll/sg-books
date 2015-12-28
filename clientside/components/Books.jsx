@@ -1,14 +1,42 @@
 import React from 'react';
 import Immutable from 'immutable';
 
+import BookStore from '../stores/BookStore';
+import InterfaceStore from '../stores/InterfaceStore';
+
 import Book from './Book.jsx';
 
-var propTypes = {
-  interface: React.PropTypes.object,
-  book: React.PropTypes.object
-};
-
 class Books extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      atom: Immutable.Map({
+        book: Immutable.Map(),
+        interface: Immutable.Map()
+      })
+    };
+  }
+
+  setStateFromStores() {
+    this.setState({
+      atom: Immutable.Map({
+        book: BookStore.data,
+        interface: InterfaceStore.data
+      })
+    });
+  }
+
+  componentDidMount() {
+    this.unsubscribeBook = BookStore.listen(this.setStateFromStores.bind(this));
+    this.unsubscribeInterface = InterfaceStore.listen(this.setStateFromStores.bind(this));
+    this.setStateFromStores();
+  }
+
+  componentWillUnmount() {
+    this.unsubscribeBook();
+    this.unsubscribeInterface();
+  }
+
   performSearch(book, search) {
     if ((book.getIn(['book', 'title']) || '').toLowerCase().indexOf(search) >= 0) {
       return true;
@@ -21,14 +49,24 @@ class Books extends React.Component {
     return false;
   }
 
+  performTokenSearch(book, search) {
+    var terms = search.split(' ');
+    for (var i = 0; i < terms.length; i++) {
+      if (!this.performSearch(book, terms[i])) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   getFilterFunction() {
-    var search = this.props.interface.get('filterSearch');
+    var search = this.props.params.query;
     if (search) {
       search = search.toLowerCase();
     }
 
     return book => {
-      if (search && !this.performSearch(book, search)) {
+      if (search && !this.performTokenSearch(book, search)) {
         return false;
       }
       return true;
@@ -36,7 +74,7 @@ class Books extends React.Component {
   }
 
   getBooks() {
-    return this.props.book.get('books', Immutable.List())
+    return this.state.atom.getIn(['book', 'books'], Immutable.List())
       .filter(this.getFilterFunction())
       .map(book => {
         return <Book atom={book} key={book.get('id')} />;
@@ -44,11 +82,20 @@ class Books extends React.Component {
   }
 
   render() {
+    var books = this.getBooks();
+
     return <div className="books">
-      {this.getBooks()}
+      {books.size > 0 &&
+        books
+      }
+
+      {books.size === 0 &&
+        <div className="books__not-found">
+          These are not the books you are looking for.
+        </div>
+      }
     </div>
   }
 }
 
-Books.propTypes = propTypes;
 export default Books;
