@@ -66,7 +66,7 @@ class BookDetails extends React.Component {
   }
 
   getLocation() {
-    var key = this.getBook().get('shelves')
+    var key = this.getBook().get('shelves', Immutable.Map())
       .filter(shelf => bookEnum.locations[shelf.get('@name')])
       .getIn([0, '@name']);
 
