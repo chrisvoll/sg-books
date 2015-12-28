@@ -1,13 +1,26 @@
 import React from 'react';
+import Immutable from 'immutable';
 
 import Book from './Book.jsx';
-import data from '../helpers/data';
 
 var propTypes = {
-  interface: React.PropTypes.object
+  interface: React.PropTypes.object,
+  book: React.PropTypes.object
 };
 
 class Books extends React.Component {
+  performSearch(book, search) {
+    if ((book.getIn(['book', 'title']) || '').toLowerCase().indexOf(search) >= 0) {
+      return true;
+    }
+
+    if ((book.getIn(['book', 'description']) || '').toLowerCase().indexOf(search) >= 0) {
+      return true;
+    }
+
+    return false;
+  }
+
   getFilterFunction() {
     var search = this.props.interface.get('filterSearch');
     if (search) {
@@ -15,7 +28,7 @@ class Books extends React.Component {
     }
 
     return book => {
-      if (search && book.getIn(['book', 'title']).toLowerCase().indexOf(search) < 0) {
+      if (search && !this.performSearch(book, search)) {
         return false;
       }
       return true;
@@ -23,8 +36,7 @@ class Books extends React.Component {
   }
 
   getBooks() {
-    var books = data.getIn(['reviews', 'review']);
-    return books
+    return this.props.book.get('books', Immutable.List())
       .filter(this.getFilterFunction())
       .map(book => {
         return <Book atom={book} key={book.get('id')} />;

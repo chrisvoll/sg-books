@@ -19,6 +19,14 @@ class Book extends React.Component {
     return str;
   }
 
+  getAuthor() {
+    return this.props.atom.getIn(['book', 'authors', 0, 'name']);
+  }
+
+  getDescription() {
+    return this.getAuthor() + ' – ' + this.getSafeDescription();
+  }
+
   getLocation() {
     var key = this.props.atom.get('shelves')
       .filter(shelf => bookEnum.locations[shelf.get('@name')])
@@ -27,16 +35,21 @@ class Book extends React.Component {
     return bookEnum.locations[key];
   }
 
+  handleClick() {
+    InterfaceActions.setSelected(this.props.atom.getIn(['book', 'id']));
+  }
+
   render() {
     var title = this.props.atom.getIn(['book', 'title']);
-    return <div className="book">
+
+    return <div className="book" onClick={this.handleClick.bind(this)}>
       <div className="book__image"/>
       <div className="book__title" title={title}>
         {title}
       </div>
 
       <div className="book__description">
-        {this.getSafeDescription()}
+        {this.getDescription()}
       </div>
 
       <div className="book__location">

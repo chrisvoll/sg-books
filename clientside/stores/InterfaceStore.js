@@ -7,7 +7,8 @@ var InterfaceStore = Reflux.createStore({
 
   data: Immutable.Map({
     filterSearch: null,
-    filterLocation: null
+    filterLocation: null,
+    selected: null
   }),
 
   init() {
@@ -25,6 +26,10 @@ var InterfaceStore = Reflux.createStore({
 
   onSetFilterSearch(value) {
     this.set('filterSearch', value);
+  },
+
+  onSetSelected(value) {
+    this.set('selected', value);
   }
 });
 
