@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html>
+
+  <head>
+    <title>Test</title>
+  </head>
+
+  <body>
+    <div id="react-output"></div>
+    <script src="/output/bundle.js"></script>
+    <script>
+      window.addEventListener('DOMContentLoaded', function() {
+        ReactBootstrapper({}, document.getElementById('react-output'));
+      });
+    </script>
+    <script src="http://localhost:3000/webpack-dev-server.js"></script>
+  </body>
+
+</html>

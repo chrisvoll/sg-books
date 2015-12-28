@@ -1,0 +1,25 @@
+body {
+  font-family: "Proxima Nova";
+  margin: 0;
+}
+
+.nav {
+  
+}
+
+.books {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.book {
+  flex: 0 0 33.333333333%;
+
+  &__title {
+    font-size: 20px;
+  }
+
+  &__description {
+    color: #999;
+  }
+}
