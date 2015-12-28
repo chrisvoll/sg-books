@@ -30,10 +30,14 @@ a {
   height: 60px;
   align-items: center;
 
-  &__logo {
+  &__logo,
+  &__topics__label {
     color: #FFF;
-    flex: 0 0 100px;
-    padding: 0 15px;
+    padding: 0 18px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
   }
 
   &__search {
@@ -63,6 +67,102 @@ a {
       @include placeholder {
         color: lighten($nav-bg, 30);
       }
+    }
+  }
+
+  &__topics {
+    &__dropdown {
+      position: absolute;
+      top: 60px;
+      right: 0;
+      z-index: 200;
+      background: #FFF;
+      border-radius: 3px;
+      box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+      transform: scale(0.5);
+      transform-origin: 114px -8px;
+      opacity: 0;
+      transition: 0.2s;
+      padding: 5px 0;
+
+      &::before {
+        content: "";
+        display: block;
+        width: 0; 
+        height: 0; 
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-bottom: 8px solid #FFF;
+        position: absolute;
+        top: -8px;
+        right: 28px;
+      }
+
+      &.visible {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+      &.hidden {
+        pointer-events: none;
+      }
+    }
+
+    &__topic {
+      display: block;
+      padding: 6px 15px;
+      width: 150px;
+      cursor: pointer;
+      background: #FFF;
+      transition: 0.2s background;
+
+      &:hover {
+        background: #F5F5F5;
+      }
+
+      &:active {
+        background: #EFEFEF;
+      }
+    }
+  }
+}
+
+.sub-navigation {
+  background: $nav-bg;
+  height: 200px;
+  display: flex;
+
+  &__inner {
+    width: 100%;
+    padding: 5px 20px 25px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+
+    &__back {
+      color: #FFF;
+      opacity: 0.5;
+      transition: 0.2s opacity;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+
+    &__title,
+    &__author {
+      max-width: 800px;
+      width: 100%;
+      color: #FFF;
+    }
+
+    &__title {
+      font-size: 30px;
+      margin: auto auto 10px;
+    }
+
+    &__author {
+      margin: 0 auto;
     }
   }
 }
@@ -165,18 +265,48 @@ a {
   }
 
   &__description {
+    line-height: 160%;
+    color: #333;
 
+    p:first-child {
+      margin-top: 0;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
   }
 
-  &__location {
-    margin: 0 0 10px;
+  &__row {
+    display: flex;
+    padding: 20px 0;
+    border-bottom: 1px solid #E5E5E5;
+
+    &__key {
+      flex: 0 0 150px;
+      border-right: 2px solid #F3F3F3;
+      text-transform: uppercase;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+      padding: 2px 0;
+    }
+
+    &__value {
+      flex: 1 1 auto;
+      padding-left: 20px;
+    }
   }
 
-  &__isbn13 {
-    margin: 0 0 10px;
-  }
+  &__details {
+    color: $link-color;
+    transition: 0.2s color;
 
-  &__publisher {
-    margin: 0 0 10px;
+    &:hover {
+      color: darken($link-color, 10);
+    }
+
+    &:active {
+      color: darken($link-color, 20);
+    }
   }
 }

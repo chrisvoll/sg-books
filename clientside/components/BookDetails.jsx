@@ -1,6 +1,7 @@
 import React from 'react';
 import Immutable from 'immutable';
 import { markdown } from 'markdown';
+import { Link } from 'react-router';
 
 import BookStore from '../stores/BookStore';
 import InterfaceStore from '../stores/InterfaceStore';
@@ -60,7 +61,10 @@ class BookDetails extends React.Component {
     // through a markdown parse.
     var str = this.getBook().getIn(['book', 'description']) || '';
     str = str
-      .replace(/<br>/ig, '\n')
+      .replace(/<br>/ig, '\n\n')
+      .replace(/<\/p>/ig, '\n')
+      .replace(/<\/?strong>/ig, '**')
+      .replace(/<\/?em>/ig, '*')
       .replace(/(<([^>]+)>)/ig, '');
     return markdown.toHTML(str);
   }
@@ -73,6 +77,10 @@ class BookDetails extends React.Component {
     return bookEnum.locations[key];
   }
 
+  getAmazonLink() {
+    return 'https://www.amazon.com/dp/' + this.getBook().getIn(['book', 'isbn']);
+  }
+
   render() {
     var book = this.getBook();
     var author = book
@@ -81,31 +89,90 @@ class BookDetails extends React.Component {
           .join(', ');
     console.log(book.toJS());
 
-    return <div className="book-details">
-      <div className="book-details__title">
-        {book.getIn(['book', 'title'])}
+    return <div className="book-details-wrapper">
+
+      <div className="sub-navigation">
+        <div className="sub-navigation__inner">
+          <Link to="/" className="sub-navigation__inner__back">
+            &larr; Back to All Books
+          </Link>
+
+          <div className="sub-navigation__inner__title">
+            {book.getIn(['book', 'title'])}
+          </div>
+
+          <div className="sub-navigation__inner__author">
+            By {author}
+          </div>
+        </div>
       </div>
 
-      <div className="book-details__author">
-        {author}
-      </div>
+      <div className="book-details">
 
-      <div className="book-details__description" dangerouslySetInnerHTML={{ __html: this.getSafeDescription() }} />
+        <div className="book-details__row">
+          <div className="book-details__row__key">
+            About this book
+          </div>
+          <div className="book-details__row__value book-details__description" dangerouslySetInnerHTML={{ __html: this.getSafeDescription() }} />
+        </div>
 
-      <div className="book-details__location">
-        Location: {this.getLocation()}
-      </div>
+        <div className="book-details__row">
+          <div className="book-details__row__key">
+            Location
+          </div>
+          <div className="book-details__row__value">
+            {this.getLocation()}
+          </div>
+        </div>
 
-      <div className="book-details__isbn13">
-        ISBN: {book.getIn(['book', 'isbn13'], book.getIn(['book', 'isbn']))}
-      </div>
+        <div className="book-details__row">
+          <div className="book-details__row__key">
+            ISBN
+          </div>
+          <div className="book-details__row__value">
+            {book.getIn(['book', 'isbn13'], book.getIn(['book', 'isbn']))}
+          </div>
+        </div>
 
-      <div className="book-details__publisher">
-        Published by {book.getIn(['book', 'publisher'])} in {book.getIn(['book', 'published'])}
-      </div>
+        <div className="book-details__row">
+          <div className="book-details__row__key">
+            Publisher
+          </div>
+          <div className="book-details__row__value">
+            {book.getIn(['book', 'publisher'])}
+          </div>
+        </div>
 
-      <div className="book-details__rating">
-        {this.getStars()} {book.getIn(['book', 'average_rating'])}
+        <div className="book-details__row">
+          <div className="book-details__row__key">
+            Publication Date
+          </div>
+          <div className="book-details__row__value">
+            {book.getIn(['book', 'published'])}
+          </div>
+        </div>
+
+        <div className="book-details__row">
+          <div className="book-details__row__key">
+            Rating
+          </div>
+          <div className="book-details__row__value">
+            {this.getStars()} {book.getIn(['book', 'average_rating'])}
+          </div>
+        </div>
+
+        <div className="book-details__row">
+          <div className="book-details__row__key">
+            More Details
+          </div>
+          <div className="book-details__row__value">
+            <a className="book-details__details" href={book.get('link')} target="_blank">
+              Goodreads
+            </a> &middot; <a className="book-details__details" href={this.getAmazonLink()} target="_blank">
+              Amazon
+            </a>
+          </div>
+        </div>
       </div>
     </div>;
   }
