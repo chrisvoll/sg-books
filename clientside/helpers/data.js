@@ -1,6 +1,6 @@
 import Immutable from 'immutable';
 
-module.exports = Immutable.fromJS({
+export default Immutable.fromJS({
    "Request": {
       "authentication": "true",
       "key": "ormxn6pQAcL7SYnpY95x5w",

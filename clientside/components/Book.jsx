@@ -9,25 +9,22 @@ var propTypes = {
 
 class Book extends React.Component {
   getSafeDescription() {
-    var description = this.props.atom.getIn(['book', 'description']) || '';
-    description = description.replace(/(<([^>]+)>)/ig, '');
-    if (description.length > 140) {
-      description = description.slice(0, 140) + '...';
+    var str = this.props.atom.getIn(['book', 'description']) || '';
+    str = str.replace(/(<([^>]+)>)/ig, '');
+
+    if (str.length > 90) {
+      str = str.slice(0, 90) + '...';
     }
-    return description;
+
+    return str;
   }
 
   getLocation() {
-    var shelves = this.props.atom.get('shelves') || Immutable.List();
-    var location = '';
+    var key = this.props.atom.get('shelves')
+      .filter(shelf => bookEnum.locations[shelf.get('@name')])
+      .getIn([0, '@name']);
 
-    shelves.forEach(shelf => {
-      if (bookEnum.locations[shelf.get('@name')]) {
-        location = bookEnum.locations[shelf.get('@name')];
-      }
-    });
-
-    return location;
+    return bookEnum.locations[key];
   }
 
   handleClick() {
