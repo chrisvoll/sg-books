@@ -1,10 +1,11 @@
-require('./style.scss');
+require('./styles/style.scss');
 
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Immutable from 'immutable';
-import Book from './Book.jsx';
-import data from './data';
+
+import Book from './components/Book.jsx';
+import data from './helpers/data';
 import InterfaceStore from './stores/InterfaceStore';
 import InterfaceActions from './actions/InterfaceActions';
 

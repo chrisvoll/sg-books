@@ -1,17 +1,10 @@
 import React from 'react';
 import Immutable from 'immutable';
-import InterfaceActions from './actions/InterfaceActions';
+import InterfaceActions from '../actions/InterfaceActions';
+import bookEnum from '../helpers/bookEnum';
 
 var propTypes = {
   atom: React.PropTypes.object
-};
-
-var rooms = {
-  'sg-mr1': 'Meeting Room 1',
-  'sg-mr2': 'Meeting Room 2',
-  'sg-mr3': 'Meeting Room 3',
-  'sg-mr4': 'Meeting Room 4',
-  'sg-desks': 'Desks'
 };
 
 class Book extends React.Component {
@@ -29,8 +22,8 @@ class Book extends React.Component {
     var location = '';
 
     shelves.forEach(shelf => {
-      if (rooms[shelf.get('@name')]) {
-        location = rooms[shelf.get('@name')];
+      if (bookEnum.locations[shelf.get('@name')]) {
+        location = bookEnum.locations[shelf.get('@name')];
       }
     });
 
