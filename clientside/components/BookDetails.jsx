@@ -165,7 +165,7 @@ class BookDetails extends React.Component {
             More Details
           </div>
           <div className="book-details__row__value">
-            <a className="book-details__details" href={book.get('link')} target="_blank">
+            <a className="book-details__details" href={book.getIn(['book', 'link'])} target="_blank">
               Goodreads
             </a> &middot; <a className="book-details__details" href={this.getAmazonLink()} target="_blank">
               Amazon
