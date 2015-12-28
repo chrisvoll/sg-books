@@ -1,16 +1,65 @@
 $link-color: #0084e0;
+$nav-bg: #779920;
+
+$font-family: "Proxima Nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+@mixin placeholder {
+  &::-webkit-input-placeholder {@content}
+  &:-moz-placeholder {@content}
+  &::-moz-placeholder {@content}
+  &:-ms-input-placeholder {@content}  
+}
 
 * {
   box-sizing: border-box;
 }
 
 body {
-  font-family: "Proxima Nova";
+  font-family: $font-family;
   margin: 0;
 }
 
-.nav {
-  
+.navigation {
+  background: $nav-bg;
+  display: flex;
+  height: 60px;
+  align-items: center;
+
+  &__logo {
+    color: #FFF;
+    flex: 0 0 100px;
+    padding: 0 15px;
+  }
+
+  &__search {
+    flex: 1 1 auto;
+
+    &__input {
+      background: darken($nav-bg, 4);
+      border: 0;
+      width: 100%;
+      padding: 11px 14px;
+      border-radius: 3px;
+      outline: none;
+      color: #FFF;
+      transition: 0.2s;
+      font-size: 14px;
+      font-family: $font-family;
+
+      &:focus {
+        background: #FFF;
+        color: #000;
+
+        @include placeholder {
+          color: $nav-bg;
+        }
+      }
+
+      @include placeholder {
+        color: lighten($nav-bg, 30);
+      }
+    }
+  }
 }
 
 .books {
@@ -53,6 +102,13 @@ body {
 
   &:nth-child(odd) {
     border-right: 1px solid #E5E5E5;
+  }
+
+  &__image {
+    width: 147px;
+    height: 222px;
+    background: #F5F5F5;
+    margin: 0 0 20px;
   }
 
   &__title {

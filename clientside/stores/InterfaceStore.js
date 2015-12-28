@@ -11,7 +11,6 @@ var InterfaceStore = Reflux.createStore({
   }),
 
   init() {
-    console.log('init');
   },
 
   set(key, val) {
@@ -24,9 +23,8 @@ var InterfaceStore = Reflux.createStore({
     this.trigger(this.data);
   },
 
-  onDoSomething() {
-    console.log('do something');
-    this.trigger(this.data);
+  onSetFilterSearch(value) {
+    this.set('filterSearch', value);
   }
 });
 

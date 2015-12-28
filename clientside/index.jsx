@@ -4,17 +4,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Immutable from 'immutable';
 
-import Book from './components/Book.jsx';
-import data from './helpers/data';
+import Books from './components/Books.jsx';
+import Navigation from './components/Navigation.jsx';
 
 import InterfaceStore from './stores/InterfaceStore';
-import InterfaceActions from './actions/InterfaceActions';
 
 class Root extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      atom: Immutable.Map()
+      atom: Immutable.Map({
+        interface: Immutable.Map()
+      })
     };
   }
 
@@ -31,16 +32,13 @@ class Root extends React.Component {
     this.unsubscribe();
   }
 
-  getBooks() {
-    var books = data.getIn(['reviews', 'review']);
-    return books.map(book => {
-      return <Book atom={book} key={book.get('id')} />;
-    });
-  }
-
   render() {
-    return <div className="books">
-      {this.getBooks()}
+    var atom = this.state.atom.get('interface');
+    return <div className="app">
+
+      <Navigation interface={atom} />
+      <Books interface={atom} />
+
     </div>;
   }
 }

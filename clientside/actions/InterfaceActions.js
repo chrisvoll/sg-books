@@ -1,7 +1,7 @@
 import Reflux from 'reflux';
 
 var InterfaceActions = Reflux.createActions({
-  doSomething: {}
+  setFilterSearch: {}
 });
 
 export default InterfaceActions;

@@ -27,14 +27,12 @@ class Book extends React.Component {
     return bookEnum.locations[key];
   }
 
-  handleClick() {
-    InterfaceActions.doSomething();
-  }
-
   render() {
-    return <div className="book" onClick={this.handleClick}>
-      <div className="book__title">
-        {this.props.atom.getIn(['book', 'title'])}
+    var title = this.props.atom.getIn(['book', 'title']);
+    return <div className="book">
+      <div className="book__image"/>
+      <div className="book__title" title={title}>
+        {title}
       </div>
 
       <div className="book__description">
