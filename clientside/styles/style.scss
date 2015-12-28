@@ -251,9 +251,10 @@ a {
 }
 
 .book-details {
-  max-width: 800px;
+  max-width: 840px;
   margin: 0 auto;
-  padding: 30px 0;
+  padding: 30px 20px;
+  transition: 0.2s padding;
 
   &__title {
     font-size: 30px;
@@ -307,6 +308,26 @@ a {
 
     &:active {
       color: darken($link-color, 20);
+    }
+  }
+}
+
+@media (max-width: 630px) {
+  .book-details {
+    padding: 0 20px;
+
+    &__row {
+      flex-direction: column;
+
+      &__key {
+        border: 0;
+        flex: 0 0 auto;
+        margin: 0 0 5px;
+      }
+
+      &__value {
+        padding: 0;
+      }
     }
   }
 }
