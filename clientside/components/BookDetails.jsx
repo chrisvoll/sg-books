@@ -87,7 +87,6 @@ class BookDetails extends React.Component {
           .getIn(['book', 'authors'], Immutable.List())
           .map(author => author.get('name'))
           .join(', ');
-    console.log(book.toJS());
 
     return <div className="book-details-wrapper">
 
